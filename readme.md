@@ -2,7 +2,7 @@
 
 ## Overview
 
-* 請將 homework 放在各自目錄下，我 review 作業時會直接修改並加上 comment 在代碼內。每星期二、星期四上課半小時。
+* 請將 homework 放在各自目錄下，我 review 作業時會直接修改並加上 comment 在代碼內。每星期二、星期四上課半小時
 
 * 作業不要求 CSS (若你會 CSS 也可以加上，我也會幫你 review )，作業只要用 HTML + Vue + JavaScript 即可
 
