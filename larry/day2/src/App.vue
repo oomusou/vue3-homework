@@ -4,6 +4,7 @@
       <input v-model="new_item" />
       <button @click="new_item_click" :disabled="new_item.length === 0">新增</button>
     </div>
+    <div>顯示清單類型: {{ display_type_name }}</div>
     <ul v-for="(item, i) in display_list" :key="i">
       <li>
         <span v-if="item.is_editing">
@@ -51,14 +52,24 @@ let todo_list = ref([
   // }
 ])
 
-let display_type = ref(0) // 0: all , 1: completed, 2: active
+let display_type = ref(0) // 0: all , 1: 完成, 2: 未完成
+let display_type_name = computed(() => {
+  switch (display_type.value) {
+    default:
+      return '全部'
+    case 1: // completed
+      return '完成'
+    case 2: // active
+      return '未完成'
+  }
+})
 let display_list = computed(() => {
   switch (display_type.value) {
     default:
       return [...todo_list.value]
-    case 1: // completed
+    case 1: // 完成
       return todo_list.value.filter((to_do) => to_do.is_completed)
-    case 2: // active
+    case 2: // 未完成
       return todo_list.value.filter((to_do) => !to_do.is_completed)
   }
 })
@@ -86,6 +97,7 @@ let on_item_editing_click = (item) => {
 let on_item_editing_save_click = (item, new_name) => {
   item.name = new_name
   item.is_editing = false
+  item_edit_tmp_name.value = ''
 }
 
 let on_item_editing_cancel_click = (item) => {
