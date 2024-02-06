@@ -108,6 +108,8 @@ let on_item_editing_cancel_click = (item) => {
 }
 
 let on_item_delete_click = (item) => {
+  // Sam: 用名稱當 key 值去刪除有風險，若有 name 一樣，只刪除一筆會變成相同名稱都刪掉
+  // Sam: 還是要該有個欄位當 key 值
   todo_list.value = todo_list.value.filter((to_do) => to_do.name !== item.name)
 }
 
