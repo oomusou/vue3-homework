@@ -2,9 +2,8 @@
   <div>
     <div>
       <input v-model="new_item" />
-      <button @click="new_item_click" :disabled="new_item.length === 0">新增</button>
+      <button @click="new_item_click" :disabled="add_new_item_disabled()">新增</button>
     </div>
-    <div>顯示清單類型: {{ display_type_name }}</div>
     <ul v-for="(item, i) in display_list" :key="i">
       <li>
         <span v-if="item.is_editing">
@@ -26,6 +25,7 @@
     <button @click="display_completed_todo_list()">顯示已完成</button>
     <button @click="display_uncompleted_todo_list()">顯示未完成</button>
     <button @click="clear_completed_todo_items()">清除完成項目</button>
+    <div>顯示清單類型: {{ display_type_name }}</div>
   </div>
 </template>
 
@@ -77,6 +77,17 @@ let display_list = computed(() => {
 let remain_todo_count = computed(() => {
   return todo_list.value.filter((todo) => !todo.is_completed).length
 })
+
+let add_new_item_disabled = () => {
+  if (new_item.value.length === 0) return true
+
+  let has_the_same_name_items = todo_list.value.filter((todo) => todo.name === new_item.value)
+  if (has_the_same_name_items.length > 0) {
+    return true
+  }
+
+  return false
+}
 
 let new_item_click = () => {
   todo_list.value.push({
