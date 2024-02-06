@@ -6,15 +6,21 @@
     </div>
     <ul v-for="(item, i) in display_list" :key="i">
       <li>
-
-        <input type="checkbox" :id="i" v-model="item.is_completed" />
-        <label for="i">{{ item.name }}</label>
-        <button @click="on_item_editing_click(item)">編輯</button>
-        <button @click="on_item_delete_click(item)">刪除</button>
+        <span v-if="item.is_editing">
+          <input v-model="item_edit_tmp_name" />
+          <button @click="on_item_editing_save_click(item, item_edit_tmp_name)">儲存</button>
+          <button @click="on_item_editing_cancel_click(item)">取消</button>
+        </span>
+        <span v-else>
+          <input type="checkbox" :id="i" v-model="item.is_completed" />
+          <label for="i">{{ item.name }}</label>
+          <button @click="on_item_editing_click(item)">編輯</button>
+          <button @click="on_item_delete_click(item)">刪除</button>
+        </span>
       </li>
     </ul>
 
-    <span>{{ remain_todo_count}} items left</span>
+    <span>{{ remain_todo_count }} items left</span>
     <button @click="display_all_todo_list()">顯示全部</button>
     <button @click="display_completed_todo_list()">顯示已完成</button>
     <button @click="display_uncompleted_todo_list()">顯示未完成</button>
@@ -57,8 +63,8 @@ let display_list = computed(() => {
   }
 })
 
-let remain_todo_count = computed(()=>{
-  return todo_list.value.filter((todo)=>!todo.is_completed).length
+let remain_todo_count = computed(() => {
+  return todo_list.value.filter((todo) => !todo.is_completed).length
 })
 
 let new_item_click = () => {
@@ -70,8 +76,21 @@ let new_item_click = () => {
   new_item.value = ''
 }
 
+let item_edit_tmp_name = ref('')
+
 let on_item_editing_click = (item) => {
   item.is_editing = true
+  item_edit_tmp_name.value = item.name
+}
+
+let on_item_editing_save_click = (item, new_name) => {
+  item.name = new_name
+  item.is_editing = false
+}
+
+let on_item_editing_cancel_click = (item) => {
+  item_edit_tmp_name.value = ''
+  item.is_editing = false
 }
 
 let on_item_delete_click = (item) => {
@@ -93,8 +112,6 @@ let display_uncompleted_todo_list = ref(() => {
 let clear_completed_todo_items = ref(() => {
   todo_list.value = todo_list.value.filter((to_do) => !to_do.is_completed)
 })
-
-
 </script>
 
 <style scoped></style>
