@@ -31,7 +31,10 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+// 專案沒安裝 ESLint 與 Prettier
+// 應該要有 .eslintrc.cjs 與 .prettierrc.json
 
+// variable 命名建議改用 JavaScript 慣用的小駝峰
 let new_item = ref('')
 
 let todo_list = ref([
@@ -63,6 +66,7 @@ let display_type_name = computed(() => {
       return '未完成'
   }
 })
+
 let display_list = computed(() => {
   switch (display_type.value) {
     default:
@@ -98,6 +102,7 @@ let new_item_click = () => {
   new_item.value = ''
 }
 
+
 let item_edit_tmp_name = ref('')
 
 let on_item_editing_click = (item) => {
@@ -121,6 +126,8 @@ let on_item_delete_click = (item) => {
 }
 
 let display_all_todo_list = ref(() => {
+  // 可嘗試不要用 magic number
+  // 傳 string `all`、用 Object 模擬 enum，或乾脆傳 function 皆可
   display_type.value = 0
 })
 
