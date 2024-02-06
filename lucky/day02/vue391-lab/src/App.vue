@@ -69,10 +69,16 @@ let onClick = () => {
   }
 }
 
+// Sam: 直接拿 v-for 的 index 去刪除有風險
+// Sam: Test case
+// 01. 新增 111, 222, 333 三筆
+// 02. 222 -> 勾選完成
+// 03. 下方選擇 Active，刪除 333，會發現 222 被刪除了
+
 let onClickDeleted = (i) => {
   // Sam: splice() 是直接去刪除 items array，刪除後 filterItems computed 會自動觸發更新
   items.value.splice(i, 1)
-
+  
   // Sam: 下面這行觀念有錯，computed 無法用 .value 去指定
   // filterItems.value = [...items.value]
 }
