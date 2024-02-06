@@ -31,30 +31,16 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-// 專案沒安裝 ESLint 與 Prettier
-// 應該要有 .eslintrc.cjs 與 .prettierrc.json
+// Sam: 專案沒安裝 ESLint 與 Prettier
+// Sam: 應該要有 .eslintrc.cjs 與 .prettierrc.json 檔案
 
-// variable 命名建議改用 JavaScript 慣用的小駝峰
+// Sam: state 與 function 命名建議改用 JavaScript 慣用的小駝峰
 let new_item = ref('')
 
-let todo_list = ref([
-  // {
-  //   name: 'hello world1',
-  //   is_completed: false,
-  //   is_editing: false
-  // },
-  // {
-  //   name: 'hello world2',
-  //   is_completed: true,
-  //   is_editing: false
-  // },
-  // {
-  //   name: 'hello world3',
-  //   is_completed: true,
-  //   is_editing: false
-  // }
-])
+let todo_list = ref([])
 
+
+// Sam: 建議不要使用 magic number, 用 string、enum 或 function 可讀性會更高
 let display_type = ref(0) // 0: all , 1: 完成, 2: 未完成
 let display_type_name = computed(() => {
   switch (display_type.value) {
@@ -101,7 +87,7 @@ let new_item_click = () => {
   })
   new_item.value = ''
 }
-
+// Sam: 沒跑過 Perttier 所以 function 間有兩行空白
 
 let item_edit_tmp_name = ref('')
 
@@ -126,8 +112,8 @@ let on_item_delete_click = (item) => {
 }
 
 let display_all_todo_list = ref(() => {
-  // 可嘗試不要用 magic number
-  // 傳 string `all`、用 Object 模擬 enum，或乾脆傳 function 皆可
+  // Sam: 可嘗試不要用 magic number
+  // Sam: 傳 string `all`、用 Object 模擬 enum，或乾脆傳 function 皆可
   display_type.value = 0
 })
 
