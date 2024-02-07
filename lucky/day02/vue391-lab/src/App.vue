@@ -21,6 +21,7 @@
     </li>
   </ul>
   <div>
+    <!-- Sam: 需求是還剩下多少筆數沒完成，也就是 Active 的筆數，不是目前 filter 的筆數-->
     <span>{{ filterItems.length }} items left</span>
     <!--    Sam: 建議不要用 0, 1, 2 的 Magic Number，可讀性與維護性不佳-->
     <button @click="filterFlag = 0">All</button>
