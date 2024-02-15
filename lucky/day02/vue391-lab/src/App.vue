@@ -1,9 +1,9 @@
 <template>
   <input v-model="newItem" />
-  <button @click="onClick">Add</button>
+  <button @click="onClickAdd">Add</button>
   <ul>
     <li v-for="(item, i) in filterItems" :key="i">
-      <input type="checkbox" :id="i" :value="item.name" v-model="item.isCompleted" />
+      <input type="checkbox" :id="i" v-model="item.isCompleted" />
       <label :for="i">{{ item.name }}</label>
       <span v-if="!item.isEdit"> </span>
       <span v-else>
@@ -16,7 +16,7 @@
         <button @click="item.isEdit = false">Save</button>
       </span>
       <span>
-        <button @click="onClickDeleted(i)">Delete</button>
+        <button @click="onClickDeleted(item.id)">Delete</button>
       </span>
     </li>
   </ul>
@@ -51,8 +51,7 @@ const filterItems = computed(() => {
       return items.value.filter((item) => item.isCompleted)
     default:
       // Sam: 直接 return items 即可
-      // return items
-
+      // return items // 不能直接返回 items, 需用[...items.value]複製一份新副本，否則一開始執行會出錯
       return [...items.value] // 不篩選，返回原始副本
   }
 })
@@ -62,9 +61,9 @@ const hasCompletedItems = computed(() => {
 })
 
 // Sam: 命名要明確一點，要能看出是 Add
-let onClick = () => {
+let onClickAdd = () => {
   if (newItem.value.trim().length > 0) {
-    const newArrayItem = { name: newItem.value, isCompleted: false, isEdit: false }
+    const newArrayItem = { id: Date.now(), name: newItem.value, isCompleted: false, isEdit: false }
     items.value.push(newArrayItem)
     newItem.value = ''
   }
@@ -76,10 +75,11 @@ let onClick = () => {
 // 02. 222 -> 勾選完成
 // 03. 下方選擇 Active，刪除 333，會發現 222 被刪除了
 
-let onClickDeleted = (i) => {
+let onClickDeleted = (id) => {
   // Sam: splice() 是直接去刪除 items array，刪除後 filterItems computed 會自動觸發更新
-  items.value.splice(i, 1)
-  
+  // items.value.splice(i, 1)
+  items.value = items.value.filter((item) => item.id !== id)
+
   // Sam: 下面這行觀念有錯，computed 無法用 .value 去指定
   // filterItems.value = [...items.value]
 }
