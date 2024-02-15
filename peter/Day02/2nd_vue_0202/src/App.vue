@@ -88,6 +88,9 @@ let showList = computed(() => {
   let tempList = toDoList.value.slice()
   let k = 0
   // sort big to small
+  // SAM: ESLint 有警告不能在 computed() 內寫有 side effect 的 function
+  // SAM: 因為 JavaScript 的 sort() 是破壞性的，會直接用原本的 Array 做修改，所以算 side effect
+  // SAM：若一定要使用 sort() 要改寫在 watch() 或 watchEffect() 內
   completeIdList.sort()
   if (showCheck.value.length > 0) showCheck.value.sort()
   // update show list
@@ -100,6 +103,8 @@ let showList = computed(() => {
 
       // compute checkbox
       if (showCheck.value.length > 0) {
+        // SAM: ESLint 也有警告不能在 computed() 內寫有 side effect 的 function
+        // SAM: 因為 push() 與 splice() 都是破壞性的，會直接修改原本 array，屬於 side effect
         completeIdList.push(activeIdList[showCheck.value[0]])
         activeIdList.splice(showCheck.value[0], 1)
         showCheck.value.splice(0)
@@ -130,6 +135,8 @@ let showList = computed(() => {
       if (showCheck.value.length < completeIdList.length) {
         k = 0
         while (k < completeIdList.length) {
+          // SAM：JavaScript 的不等於建議使用 !==，會同時比較 type 與 value，
+          // SAM: 因為 != 只比較 value，會牽涉到轉型，常有一些不可預期的例外
           if (showCheck.value[k] != k) {
             break
           }
@@ -165,6 +172,8 @@ let showList = computed(() => {
       completeIdList.splice(0)
       for (let j = 0; j < showCheck.value.length; j++) {
         while (k < showCheck.value[j]) {
+          // SAM：JavaScript 的等於建議使用 ===，會同時比較 type 與 value，
+          // SAM: 因為 == 只比較 value，會牽涉到轉型，常有一些不可預期的例外
           if (removeId.value != k) {
             if (
               (removeId.value != -1 && removeId.value > k) ||
