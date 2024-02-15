@@ -1,0 +1,21 @@
+Day02:
+  problem
+    case 1: IDE show => Cannot find module 'prettier'
+    answer 1: npm install --save-dev prettier
+
+  Svelte base tag
+    <template>
+    </template>
+    <script setup>
+    </script>
+    <style scoped>
+    </style>
+
+  Day2 homework
+    1. add => append item
+    2. edit / delete
+    3. count items
+    4. all => show all
+    5. active => show not checked
+    6. completed => show checked
+    7. clear completed => delete checked (hidden when no one checked)
