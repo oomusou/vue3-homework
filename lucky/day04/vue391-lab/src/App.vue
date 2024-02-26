@@ -5,18 +5,14 @@
     <li v-for="(item, i) in filterItems" :key="i">
       <input type="checkbox" :id="i" v-model="item.isCompleted" />
       <label :for="i">{{ item.name }}</label>
-      <span v-if="!item.isEdit"> </span>
-      <span v-else>
-        <input type="text" v-model="item.name" />
-      </span>
       <span v-if="!item.isEdit">
-        <button @click="item.isEdit = true">Edit</button>
+        <button @click="onEdit(item)">Edit</button>
+        <button @click="onClickDeleted(item)">Delete</button>
       </span>
       <span v-else>
-        <button @click="item.isEdit = false">Save</button>
-      </span>
-      <span>
-        <button @click="onClickDeleted(item)">Delete</button>
+        <input type="text" v-model="inputValue" />
+        <button @click="onSave(item)">Save</button>
+        <button @click="onCancel(item)">Cancel</button>
       </span>
     </li>
   </ul>
@@ -33,15 +29,13 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { addItem, getItems, delItem } from '@/api/todoApi'
+import { addItem, getItems, saveItem, delItem } from '@/api/todoApi'
 
 let newItem = ref('')
 
-let items = ref([
-  // { name: 'Apple', isCompleted: false, isEdit: false },
-  // { name: 'Google', isCompleted: false, isEdit: false },
-  // { name: 'Microsoft', isCompleted: false, isEdit: false }
-])
+let items = ref([])
+
+let inputValue = ref('')
 
 const filterFlag = ref(0) // 0: all, 1: active, 2: completed
 const filterItems = computed(() => {
@@ -74,6 +68,20 @@ let onClickAdd = async () => {
   }
 }
 
+let onEdit = (item) => {
+  item.isEdit = true
+}
+
+let onSave = async (item) => {
+  item.isEdit = false
+  item.name = inputValue.value
+  await saveItem(item)
+}
+
+let onCancel = (item) => {
+  item.isEdit = false
+}
+
 // Sam: 直接拿 v-for 的 index 去刪除有風險
 // Sam: Test case
 // 01. 新增 111, 222, 333 三筆
@@ -86,7 +94,13 @@ let onClickDeleted = async (item) => {
   items.value = await getItems()
 }
 
-let onClickClearCompleted = () => {
-  items.value = items.value.filter((item) => !item.isCompleted)
+let onClickClearCompleted = async () => {
+  const completedItems = items.value.filter((item) => item.isCompleted)
+
+  for (const item of completedItems) {
+    await delItem(item)
+  }
+
+  items.value = await getItems()
 }
 </script>

@@ -1,16 +1,3 @@
 {
-  "items": [
-    {
-      "id": "d057",
-      "name": "111",
-      "isCompleted": false,
-      "isEdit": false
-    },
-    {
-      "id": "50e4",
-      "name": "333",
-      "isCompleted": false,
-      "isEdit": false
-    }
-  ]
+  "items": []
 }

@@ -29,6 +29,22 @@ export let getItems = async () => {
   }
 }
 
+export let saveItem = async (item) => {
+  let url = `http://localhost:3000/items/${item.id}`
+
+  let body = {
+    isCompleted: item.isCompleted,
+    name: item.name
+  }
+
+  try {
+    let { data } = await axios.put(url, body)
+    return data
+  } catch (e) {
+    console.error(e)
+  }
+}
+
 export let delItem = async (item) => {
   let url = `http://localhost:3000/items/${item.id}`
 
